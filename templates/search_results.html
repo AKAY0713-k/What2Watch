@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}Search Results |{% endblock %}
+{% block body %}
+<div style="background: linear-gradient(to bottom, #fc9fe3ff, #bef0ffff, #fc9fe3ff); min-height: 100vh;">
+
+<div class="container py-4">
+  <h2 class="text-purple mb-4">Search Results for "{{ query }}"</h2>
+
+  {% if not matched_dramas and not matched_movies and not matched_actors %}
+    <p>No results found.</p>
+  {% endif %}
+
+  <style>
+  .result-card {
+  background-color: #1e1e2f;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.result-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.3);
+}
+
+.result-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+  transition: transform 0.3s ease;
+}
+
+.result-image:hover {
+  transform: scale(1.05);
+}
+
+.result-body {
+  flex: 1;
+}
+
+  .result-body h5 {
+    color: #66ccff;
+  }
+
+  .btn-view {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 5px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-view:hover {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+  }
+</style>
+
+
+  {% if matched_dramas %}
+    <h4 class="mb-3 text-dark"><b>📺 Dramas</b></h4>
+    {% for show in matched_dramas %}
+      <div class="result-card">
+        <img src="{{ show.image }}" alt="{{ show.title }}" class="result-image">
+        <div class="result-body">
+          <h5>{{ show.title }}</h5>
+          <p><strong>Country:</strong> {{ show.country }}</p>
+          <p>{{ show.description|truncatechars:200 }}</p>
+          <a href="{% url 'dramaview' show.title|slugify %}" class="btn btn-view">View</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if matched_movies %}
+    <h4 class="mt-5 mb-3 text-dark"><b>🎬 Movies</b></h4>
+    {% for movie in matched_movies %}
+      <div class="result-card">
+        <img src="{{ movie.image }}" alt="{{ movie.title }}" class="result-image">
+        <div class="result-body">
+          <h5>{{ movie.title }}</h5>
+          <p><strong>Country:</strong> {{ movie.country }}</p>
+          <p>{{ movie.description|truncatechars:200 }}</p>
+          <a href="{% url 'movieview' movie.title %}" class="btn btn-view">View</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if matched_actors %}
+    <h4 class="mt-5 mb-3 text-dark"><b>🎭 Actors</b></h4>
+    {% for actor in matched_actors %}
+      <div class="result-card">
+        <img src="{{ actor.image }}" alt="{{ actor.name }}" class="result-image">
+        <div class="result-body">
+          <h5>{{ actor.name }}</h5>
+          <p><strong>Nationality:</strong> {{ actor.nationality }}</p>
+          <p>{{ actor.description|truncatechars:200 }}</p>
+          <a href="{% url 'actor_profile' actor.name|slugify %}" class="btn btn-view">View</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

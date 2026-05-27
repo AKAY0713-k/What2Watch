@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Contact Us | 
+{% endblock title %}
+
+{% block body %}
+<!-- HERO SECTION -->
+<div class="position-relative">
+  <img src="{% static 'img/k1.jpeg' %}" class="w-100" style="height: 500px; object-fit: cover; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;">
+  <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+    <h1 class="display-5 fw-bold">Contact us</h1>
+    <p class="lead">We're here to help with anything you need</p>
+  </div>
+</div>
+
+<!-- CONTACT SECTION -->
+<div class="container my-5">
+  <div class="bg-white text-dark rounded shadow p-4 px-5" style="max-width: 1100px; margin: auto;">
+    <div class="row">
+      <div class="col-md-6 border-end">
+        <h3 class="fw-bold mb-3">Get in touch</h3>
+        <p>Feel free to reach out to us via any of the methods below.</p>
+
+        <div class="mb-3">
+          <i class="bi bi-geo-alt-fill text me-2 " style="color: #6A00FF;"></i>
+          <strong>Head Office:</strong>
+          <div>What2Watch, Seoul, South Korea</div>
+        </div>
+
+        <div class="mb-3">
+          <i class="bi bi-envelope-fill text" style="color: #6A00FF;"></i>
+          <strong>Email Us:</strong>
+          <div>support@what2watch.com</div>
+        </div>
+
+        <div class="mb-3">
+          <i class="bi bi-telephone-fill text" style="color: #6A00FF;"></i>
+          <strong>Call Us:</strong>
+          <div>+91 9876543210</div>
+        </div>
+
+        <div class="mt-4">
+          <p class="mb-1"><strong>Follow us</strong></p>
+          <a href="#" class="text me-3" style="color: #6A00FF;"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="text me-3" style="color: #6A00FF;"><i class="bi bi-instagram fs-5"></i></a>
+          <a href="#" class="text me-3" style="color: #6A00FF;"><i class="bi bi-twitter fs-5"></i></a>
+          <a href="#" class="text" style="color: #6A00FF;"><i class="bi bi-youtube fs-5"></i></a>
+        </div>
+      </div>
+
+      <div class="col-md-6 mt-4 mt-md-0">
+        <h3 class="fw-bold mb-3">Send us a message</h3>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="POST" action="/contact">
+          {% csrf_token %}
+          <div class="row mb-3">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Name" name="name" required>
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Company" name="company">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="Phone" name="phone" required>
+            </div>
+            <div class="col">
+              <input type="email" class="form-control" placeholder="Email" name="email" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Subject" name="subject" required>
+          </div>
+          <div class="mb-3">
+            <textarea class="form-control" rows="4" placeholder="Message" name="desc" required></textarea>
+          </div>
+          <button type="submit" class="btn" style="background-color: #6A00FF; color:white;">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock body %}

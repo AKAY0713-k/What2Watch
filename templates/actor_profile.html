@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Actor Profile|
+{% endblock title %}
+
+{% block body %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body {
+    background-color: #000000ff;
+    color: #fff;
+  }
+  .profile-pic {
+    width: 100%;
+    border-radius: 10px;
+  }
+  .section-title {
+    background-color: #3ec4ff;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    color: #ffffffff;
+  }
+  .rating-stars {
+    color: #fcd34d;
+  }
+  .bio-box, .drama-table-box {
+    background-color: #1c1c1c;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .sidebar-box {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 10px;
+    color: #ddd;
+    margin-bottom: 1rem;
+  }
+  .sidebar-box h5 {
+    background-color: #3ec4ff;
+    color: #ffffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin: 0;
+  }
+</style>
+
+<div class="container-fluid py-5 px-4" style="max-width: 1400px; margin: auto;">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="bio-box">
+        <h2 class="fw-bold" style="color: #3ec4ff;">{{ actor.name }}</h2>
+        <p>{{ actor.description }}</p>
+      </div>
+
+      <div class="drama-table-box">
+        <div class="px-3 py-2 rounded-top" style="background-color: #3ec4ff; color: white;">
+          <h3 class="mb-0">Dramas</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-dark table-bordered align-middle text-center">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for drama, year in actor.dramas %}
+              <tr>
+                <td>{{ drama }}</td>
+                <td>{{ year }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="drama-table-box">
+        <div class="px-3 py-2 rounded-top" style="background-color: #3ec4ff; color: white;">
+          <h3 class="mb-0">Movies</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-dark table-bordered align-middle text-center">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Year</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for movie, year in actor.movies %}
+              <tr>
+                <td>{{ movie }}</td>
+                <td>{{ year }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="sidebar-box text-center">
+        <img src="{{ actor.image }}" class="profile-pic img-fluid" alt="{{ actor.name }}">
+        <h4 class="mt-2">{{ actor.name }}</h4>
+        <p><strong>{{ actor.hearts|default:"1,697" }}</strong> Hearts</p>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="px-3 py-2 rounded-top" style="background-color: #3ec4ff; color: white;">
+          <h3 class="mb-0">Details</h3>
+        </div>
+        <ul class="list-unstyled mt-3">
+          <li><strong>Full Name:</strong> {{ actor.name }}</li>
+          <li><strong>Born:</strong> {{ actor.born }}</li>
+          <li><strong>Age:</strong> {{ actor.age }}</li>
+          <li><strong>Nationality:</strong> {{ actor.nationality }}</li>
+          <li><strong>Gender:</strong> {{ actor.gender }}</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock body %}

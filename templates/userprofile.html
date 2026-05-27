@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}User Profile |{% endblock %}
+
+{% block body %}
+<style>
+  body {
+    background: linear-gradient(135deg, #d4b5ffff, #97dcfaff, #fd6dd7ff);
+    color: white;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px 0;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .profile-card,
+  .watchlist-card {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+  }
+
+  .profile-card {
+    max-width: 500px;
+  }
+
+  .watchlist-card {
+    max-width: 900px;
+    min-height: 600px;
+  }
+
+  .watchlist-tabs .nav-link.active {
+    background-color: #6A00FF !important;
+    color: white !important;
+    font-weight: bold;
+  }
+
+  .watchlist-tabs .nav-link {
+    color: white;
+  }
+
+  .tab-pane {
+    color: #ccc;
+    font-size: 1.2rem;
+  }
+
+  .avatar-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 20px;
+    border: 3px solid #ddd;
+  }
+
+  .avatar-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card img {
+    border-radius: 8px;
+  }
+</style>
+
+<div class="content-wrapper">
+  <!-- Profile Section -->
+  <div class="profile-card text-center">
+    <h2>Welcome, {{ UserProfile.user.username }}!</h2>
+
+    <div class="avatar-container">
+      {% if UserProfile.upload_avatar %}
+        <img src="{{ UserProfile.upload_avatar.url }}" alt="Avatar">
+      {% else %}
+        <img src="{% static 'img/default-avatar.png' %}" alt="Default Avatar">
+      {% endif %}
+    </div>
+
+    <form action="{% url 'upload_avatar' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="upload_avatar" class="form-control w-75 m-auto mt-2">
+      <button type="submit" class="btn btn-light mt-2 fw-bold">Upload Picture</button>
+    </form>
+
+    <div class="mt-4 text-start">
+      <p><strong>Role:</strong> {{ UserProfile.role }}</p>
+      <p><strong>Contribution Points:</strong> {{ UserProfile.contribution_points }}</p>
+      <p><strong>Join Date:</strong> {{ UserProfile.user.date_joined|date:"F d, Y" }}</p>
+      <p><strong>Last Online:</strong> {{ UserProfile.user.last_login|timesince }} ago</p>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn fw-bold text-white mt-3" style="background-color: #6A00FF; border: none;">
+        Logout
+      </button>
+    </form>
+  </div>
+
+  <!-- Watchlist Section -->
+  <div class="watchlist-card">
+    <h4 class="mb-3">📺 Watchlist</h4>
+    <ul class="nav nav-tabs watchlist-tabs" id="watchlistTabs" role="tablist">
+      <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#current">Currently Watching</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#completed">Completed</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#onhold">On Hold</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#dropped">Dropped</a></li>
+      <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#planned">Plan to Watch</a></li>
+    </ul>
+
+    <div class="tab-content mt-3">
+      <!-- Currently Watching -->
+      <div class="tab-pane fade show active" id="current">
+  {% for item in currently_watching %}
+    <div class="card mb-2 bg-dark text-white p-3">
+      <div class="d-flex align-items-start">
+        <!-- Left: Image -->
+        <img src="{{ item.image_url }}" alt="{{ item.title }}" width="80" height="auto" class="me-3 rounded">
+
+        <!-- Right: Text info -->
+        <div>
+          <h5 class="mb-1">{{ item.title }}</h5>
+          <p class="mb-1">Episodes Watched: {{ item.episodes_watched }}</p>
+          <p class="mb-1">Rating: {{ item.rating }}</p>
+          {% if item.notes %}
+            <p class="mb-0">{{ item.notes }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No dramas currently being watched.</p>
+  {% endfor %}
+</div>
+
+
+      <!-- Completed -->
+      <div class="tab-pane fade" id="completed">
+  {% for item in completed %}
+    <div class="card mb-2 bg-dark text-white p-3">
+      <div class="d-flex align-items-start">
+        <!-- Left: Image -->
+        <img src="{{ item.image_url }}" alt="{{ item.title }}" width="80" height="auto" class="me-3 rounded">
+
+        <!-- Right: Text Info -->
+        <div>
+          <h5 class="mb-1">{{ item.title }}</h5>
+          <p class="mb-1">Episodes Watched: {{ item.episodes_watched }}</p>
+          <p class="mb-1">Rating: {{ item.rating }}</p>
+          {% if item.notes %}
+            <p class="mb-0">{{ item.notes }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No completed dramas.</p>
+  {% endfor %}
+</div>
+
+      <!-- On Hold -->
+      <div class="tab-pane fade" id="onhold">
+{% for item in on_hold %}
+  {% if item.title and item.image_url %}
+    <div class="card mb-2 bg-dark text-white p-3">
+      <div class="d-flex align-items-center">
+        <img src="{{ item.image_url }}" alt="{{ item.title }}" width="80" class="me-3 rounded">
+        <div>
+          <h5>{{ item.title }}</h5>
+          <p>Episodes Watched: {{ item.episodes_watched }}</p>
+          <p>Rating: {{ item.rating }}</p>
+          <p>{{ item.notes }}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% empty %}
+  <p>No dramas on hold.</p>
+{% endfor %}
+  </div>
+
+
+      <!-- Dropped -->
+      <div class="tab-pane fade" id="dropped">
+  {% for item in dropped %}
+    <div class="card mb-2 bg-dark text-white p-3">
+      <div class="d-flex align-items-start">
+        <!-- Left: Image -->
+        <img src="{{ item.image_url }}" alt="{{ item.title }}" width="80" class="me-3 rounded">
+
+        <!-- Right: Text Info -->
+        <div>
+          <h5 class="mb-1">{{ item.title }}</h5>
+          <p class="mb-1">Episodes Watched: {{ item.episodes_watched }}</p>
+          <p class="mb-1">Rating: {{ item.rating }}</p>
+          {% if item.notes %}
+            <p class="mb-0">{{ item.notes }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No dropped dramas.</p>
+  {% endfor %}
+</div>
+
+      <!-- Plan to Watch -->
+      <div class="tab-pane fade" id="planned">
+  {% for item in plan_to_watch %}
+    <div class="card mb-2 bg-dark text-white p-3">
+      <div class="d-flex align-items-start">
+        <!-- Left: Image -->
+        <img src="{{ item.image_url }}" alt="{{ item.title }}" width="80" class="me-3 rounded">
+
+        <!-- Right: Text Info -->
+        <div>
+          <h5 class="mb-1">{{ item.title }}</h5>
+          <p class="mb-1">Episodes Watched: {{ item.episodes_watched }}</p>
+          <p class="mb-1">Rating: {{ item.rating }}</p>
+          {% if item.notes %}
+            <p class="mb-0">{{ item.notes }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No planned dramas yet.</p>
+  {% endfor %}
+</div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

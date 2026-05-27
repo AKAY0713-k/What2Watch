@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Home |
+{% endblock title %}
+{% block body %}
+<!-- HERO BANNER SECTION -->
+<div class="container-fluid px-0">
+  <div class="position-relative">
+    <img src="/static/img/guide1.jpg" class="w-100" height="600"
+      style="object-fit: cover; filter: brightness(65%);" alt="Banner Image">
+    <div class="position-absolute bottom-0 end-0 text-white p-5 text-end">
+      <h1 class="display-5 fw-bold">Your personalized guide to Asian content <br />
+        — from Kdramas to cdramas, from thrillers to talk shows <br />
+        — all in one mood-based discovery platform.</h1>
+      <p><a class="btn btn-lg btn-primary" href="/tvshows">Explore</a></p>
+    </div>
+  </div>
+</div>
+<!-- SwiperJS CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+<!-- Custom Styling -->
+<style>
+  .swiper-button-next,
+  .swiper-button-prev {
+    background-color: rgba(255, 255, 255, 0.2); 
+    padding: 20px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.9); 
+    transition: background-color 0.3s ease;
+  }
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    background-color: rgba(255, 255, 255, 0.4); 
+  }
+  .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+  }
+</style>
+<!-- PAGE BACKGROUND GRADIENT -->
+<div style="background: linear-gradient(to bottom, #d4b5ff,#ffffffff, #d4b5ff);">
+  <!-- TRENDING SHOWS SECTION -->
+  <div class="container pt-5">
+    <h2 class="mb-4 fw-bold text-purple " style="color: #6c5ce7;">🔥 Trending Shows</h2>
+<p class="text-muted mb-4"><b>See what's buzzing right now across Asia!</b></p>    {% if trending %}
+    <div class="swiper trending-swiper">
+      <div class="swiper-wrapper">
+        {% for show in trending %}
+        <div class="swiper-slide">
+          <div class="card shadow-sm">
+            <img src="{{ show.image }}" class="card-img-top" alt="{{ show.title }} poster">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="card-title mb-0 text-purple">{{ show.title }}</h5>
+                  <small class="text-muted"><i>{{ show.country }}</i></small>
+                </div>
+              <span class="badge bg-warning">{{ show.genre }}</span> <!-- Updated to green -->
+              </div>
+              <div class="mt-2 d-flex justify-content-end">
+                                <a href="{% url 'dramaview' show.title|slugify %}" class="btn btn-sm btn-outline-primary">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+    {% else %}
+    <p class="text-center text-muted">No trending shows available right now.</p>
+    {% endif %}
+  </div>
+  <!-- UPCOMING SHOWS SECTION -->
+  <div class="container pt-5 pb-5">
+    <h2 class="mb-4 fw-bold text-purple "  style="color: #6c5ce7;">📺 Upcoming Dramas</h2>
+    <p class="text-muted mb-4"><b>Mark your calendars for these upcoming releases!</b></p>
+    {% if upcoming %}
+    <div class="swiper upcoming-swiper">
+      <div class="swiper-wrapper">
+        {% for show in upcoming %}
+        <div class="swiper-slide">
+          <div class="card shadow-sm">
+            <img src="{{ show.image }}" class="card-img-top" alt="{{ show.title }} poster">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="card-title mb-0 text-purple">{{ show.title }}</h5>
+                  <small class="text-muted"><i>{{ show.country }}</i></small>
+                </div>
+                <span class="badge bg-info" style="background-color:green;">{{ show.genre }}</span>
+              </div>
+              <div class="mt-2 d-flex justify-content-end">
+                                <a href="{% url 'dramaview' show.title|slugify %}" class="btn btn-sm btn-outline-primary">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+    {% else %}
+    <p class="text-center text-muted">No upcoming shows available right now.</p>
+    {% endif %}
+  </div>
+</div>
+<!-- SwiperJS Script -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  const initSwipers = () => {
+    new Swiper('.trending-swiper', {
+      slidesPerView: 3,
+      slidesPerGroup: 3,
+      spaceBetween: 15,
+      breakpoints: {
+        576: { slidesPerView: 2, slidesPerGroup: 2 },
+        768: { slidesPerView: 3, slidesPerGroup: 3 },
+        992: { slidesPerView: 3, slidesPerGroup: 3 }
+      },
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }
+    });
+    new Swiper('.upcoming-swiper', {
+      slidesPerView: 3,
+      slidesPerGroup: 3,
+      spaceBetween: 15,
+      breakpoints: {
+        576: { slidesPerView: 2, slidesPerGroup: 2 },
+        768: { slidesPerView: 3, slidesPerGroup: 3 },
+        992: { slidesPerView: 3, slidesPerGroup: 3 }
+      },
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }
+    });
+  };
+  document.addEventListener('DOMContentLoaded', initSwipers);
+</script>
+{% endblock body %}

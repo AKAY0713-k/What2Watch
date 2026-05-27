@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+About Us |
+{% endblock title %}
+
+{% block body %}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #fbeeff 0%, #e2e8ff 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+.image-up {
+  margin-top: -30px;
+  margin-left: 250px;
+}
+
+.image-down {
+  margin-top: 30px;
+  margin-right:0px;
+}
+
+  .about-section {
+    padding: 80px 60px;
+  }
+
+  .about-img {
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+  .about-text h6 {
+    letter-spacing: 2px;
+    color: #8f71ff;
+    font-weight: 600;
+  }
+
+  .about-text h2 {
+    font-weight: 800;
+    color: #1d1d1f;
+    font-size: 40px;
+  }
+
+  .about-text p {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-top: 15px;
+  }
+
+  .btn-purple {
+    background: linear-gradient(to right, #a18cd1, #fbc2eb);
+    border: none;
+    padding: 12px 30px;
+    color: white;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: 0.3s;
+    margin-top: 25px;
+    text-decoration: none;
+  }
+
+  .btn-purple:hover {
+    background: linear-gradient(to right, #9b7ed0, #eaaed8);
+    color: white;
+  }
+
+  .emoji-bar {
+    margin-top: 12px;
+    font-size: 20px;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .mini-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+
+  .mini-card h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+  }
+
+  .mini-card small {
+    font-size: 12px;
+    color: #777;
+  }
+
+  @media (max-width: 768px) {
+    .about-section {
+      padding: 40px 20px;
+    }
+
+    .about-text h2 {
+      font-size: 30px;
+    }
+
+    .about-text p {
+      font-size: 15px;
+    }
+  }
+</style>
+
+<div class="container-fluid about-section">
+  <div class="row align-items-center">
+    <div class="col-md-6 text-center mb-4 mb-md-0">
+<div class="row justify-content align-items ">
+<div class="col-6">
+  <div class="about-image image-up">
+    <img src="{% static 'img/edit.png' %}"  style="height: 600px;  object-fit: cover;">
+  </div>
+</div>
+<div class="col-6">
+  <div class="about-image image-down mb-5">
+    <img src="{% static 'img/edit2.png' %}"style="height: 600px; object-fit: cover;">
+  </div>
+  <div class="emoji-bar"> 👉 😍 🤩 ❤️ 🔥</div>
+</div>
+
+        <div class="col-10">
+          <div class="mini-card">
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 about-text">
+      <h6>DISCOVER</h6>
+      <h2>ABOUT OUR PLATFORM</h2>
+      <p>
+        We’re a dedicated hub for all Asian entertainment lovers — whether you binge K-Dramas, cry to J-Movies, or laugh through Thai variety shows. 
+        Our platform lets you explore titles, track what you're watching, read actor profiles, and get mood-based recommendations.
+      </p>
+      <p>
+        Join thousands of fans worldwide, organize your watchlist, and find your next obsession — whether it's romantic, thrilling, or healing.
+      </p>
+      <a href="/tvshows" class="btn btn-purple">EXPLORE MORE</a>
+      <div class="mini-card" >
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
